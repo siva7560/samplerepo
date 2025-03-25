@@ -7,21 +7,19 @@ on:
 
 jobs:
   deploy:
-    runs-on: self-hosted  # Uses the EC2 runner
+    runs-on: self-hosted  # Using EC2 as a self-hosted runner
 
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-     
-
       - name: Build Docker Image
-        run: sudo docker build -t my-html-app .
+        run: docker build -t my-html-app .
 
-      - name: Stop and Remove Old Container
+      - name: Stop and Remove Old Container (if exists)
         run: |
-          sudo docker stop my-html-container || true
-          sudo docker rm my-html-container || true
+          docker stop my-html-container || true
+          docker rm my-html-container || true
 
       - name: Run New Container
-        run: sudo docker run -d -p 80:80 --name my-html-container my-html-app
+        run: docker run -d -p 80:80 --name my-html-container my-html-app
