@@ -1,6 +1,5 @@
 name: Deploy to AWS EC2
 
-
 on:
   push:
     branches:
@@ -14,13 +13,16 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
+      - name: Login to Docker (Optional, if pulling from a private registry)
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
       - name: Build Docker Image
-        run: docker build -t my-html-app .
+        run: sudo docker build -t my-html-app .
 
       - name: Stop and Remove Old Container
         run: |
-          docker stop my-html-container || true
-          docker rm my-html-container || true
+          sudo docker stop my-html-container || true
+          sudo docker rm my-html-container || true
 
       - name: Run New Container
-        run: docker run -d -p 80:80 --name my-html-container my-html-app
+        run: sudo docker run -d -p 80:80 --name my-html-container my-html-app
