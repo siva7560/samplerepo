@@ -13,8 +13,7 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Login to Docker (Optional, if pulling from a private registry)
-        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+     
 
       - name: Build Docker Image
         run: sudo docker build -t my-html-app .
